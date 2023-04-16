@@ -6,7 +6,7 @@ clock = pygame.time.Clock()
 screen_width = 1000
 screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("STARSTA")
+pygame.display.set_caption("STARSTRA")
 
 purple = (168, 103, 205)
 green = (87, 147, 50)
