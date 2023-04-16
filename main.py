@@ -13,9 +13,7 @@ green = (87, 147, 50)
 white = (200, 200, 200)
 
 
-def create_player():
-    new_player = player.Player(screen, "assets/pixil-frame-0(2).png", 500, 400)
-    new_player.draw_player()
+new_player = player.Player(screen, "assets/pixil-frame-0(6).png", 460, 650, 5)
 
 
 while True:
@@ -24,6 +22,6 @@ while True:
             pygame.quit()
 
     screen.fill((5, 5, 5))
-    create_player()
-    clock.tick(6)
+    new_player.update()
+    clock.tick(60)
     pygame.display.flip()
