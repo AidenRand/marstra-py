@@ -7,16 +7,26 @@ class Player:
         self.player = pygame.image.load(player)
         self.x = x
         self.y = y
+        self.player_rect = self.player.get_rect(center=(self.x, self.y))
         self.step = step
 
     def update(self):
-        player_rect = self.player.get_rect(center=(self.x, self.y))
-
         key_input = pygame.key.get_pressed()
         if key_input[pygame.K_d]:
-            self.x += 5
+            self.x += self.step
         if key_input[pygame.K_a]:
-            self.x -= 5
+            self.x -= self.step
 
-        player_rect.move(self.x, self.y)
+        if self.x >= 960:
+            self.x -= 5
+        if self.x <= 0:
+            self.x += 5
+
+        self.player_rect.move(self.x, self.y)
         self.screen.blit(self.player, (self.x, self.y))
+
+    def wall_collision(self):
+        if self.player_rect.right >= 950:
+            self.x -= 10
+        if self.player_rect.left <= 10:
+            self.x += 10

@@ -13,8 +13,7 @@ green = (87, 147, 50)
 white = (200, 200, 200)
 
 
-new_player = player.Player(screen, "assets/pixil-frame-0(6).png", 460, 650, 5)
-
+new_player = player.Player(screen, "assets/pixil-frame-0(6).png", 460, 700, 5)
 
 while True:
     for event in pygame.event.get():
@@ -22,6 +21,7 @@ while True:
             pygame.quit()
 
     screen.fill((5, 5, 5))
+    new_player.wall_collision()
     new_player.update()
     clock.tick(60)
     pygame.display.flip()
