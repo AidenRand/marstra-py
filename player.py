@@ -18,9 +18,9 @@ class Player:
             self.x -= self.step
 
         if self.x >= 960:
-            self.x -= 5
+            self.x -= self.step
         if self.x <= 0:
-            self.x += 5
+            self.x += self.step
 
         self.player_rect.move(self.x, self.y)
         self.screen.blit(self.player, (self.x, self.y))
