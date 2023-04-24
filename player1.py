@@ -1,7 +1,7 @@
 import pygame
 
 
-class Player:
+class Player1:
     def __init__(self, screen, player, x, y, step):
         self.screen = screen
         self.player = pygame.image.load(player)

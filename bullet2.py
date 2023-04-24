@@ -1,14 +1,14 @@
 import pygame
 
 
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, screen, x, y, y_speed):
+class Bullet2(pygame.sprite.Sprite):
+    def __init__(self, screen, x, y, y_speed, image):
         pygame.sprite.Sprite.__init__(self)
         self.screen = screen
         self.x = x
         self.y = y
         self.y_speed = y_speed
-        self.image = pygame.image.load("assets/bullet1.png")
+        self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
 
