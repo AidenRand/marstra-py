@@ -2,24 +2,25 @@ import pygame
 
 
 class Player1:
-    def __init__(self, screen, player, x, y, step):
+    def __init__(self, screen, player, x, y, step, dt):
         self.screen = screen
         self.player = pygame.image.load(player)
         self.x = x
         self.y = y
         self.player_rect = self.player.get_rect(center=(self.x, self.y))
         self.step = step
+        self.dt = dt
 
     def update(self):
         key_input = pygame.key.get_pressed()
         if key_input[pygame.K_d]:
-            self.x += self.step
+            self.x += self.step * self.dt
         if key_input[pygame.K_a]:
-            self.x -= self.step
+            self.x -= self.step * self.dt
         if key_input[pygame.K_w]:
-            self.y -= self.step
+            self.y -= self.step * self.dt
         if key_input[pygame.K_s]:
-            self.y += self.step
+            self.y += self.step * self.dt
 
         self.player_rect.move(self.x, self.y)
         self.screen.blit(self.player, (self.x, self.y))

@@ -10,7 +10,7 @@ screen_width = 1000
 screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("STARSTRA")
-
+dt = clock.tick(30) / 1000
 
 purple = (168, 103, 205)
 green = (87, 147, 50)
@@ -19,8 +19,8 @@ white = (200, 200, 200)
 bg = pygame.image.load("assets/background.jpg").convert()
 bg_width = bg.get_width()
 
-left_player = player1.Player1(screen, "assets/player1.png", 10, 460, 10)
-right_player = player2.Player2(screen, "assets/player2.png", 930, 460, 10)
+left_player = player1.Player1(screen, "assets/player1.png", 10, 460, 30, dt)
+right_player = player2.Player2(screen, "assets/player2.png", 930, 460, 30, dt)
 
 bullet_group_left = pygame.sprite.Group()
 bullet_group_right = pygame.sprite.Group()
@@ -60,8 +60,9 @@ while True:
                 screen,
                 left_player.returnX(),
                 left_player.returnY(),
-                50,
+                200,
                 "assets/bullet1.png",
+                dt,
             )
             bullet_group_left.add(left_bullet)
     else:
@@ -75,8 +76,9 @@ while True:
                 screen,
                 right_player.returnX(),
                 right_player.returnY(),
-                -50,
+                -200,
                 "assets/bullet2.png",
+                dt,
             )
             bullet_group_left.add(right_bullet)
     else:
