@@ -25,15 +25,20 @@ class Player2:
         self.player_rect.move(self.x, self.y)
         self.screen.blit(self.player, (self.x, self.y))
 
+    def bullet_collision(self, bullet_group_left, left_health):
+        for bullet in bullet_group_left:
+            if self.player_rect.colliderect(bullet):
+                return True
+
     def wall_collision(self):
         if self.x >= 940:
             self.x -= self.step
         if self.x <= 660:
             self.x += self.step
-        if self.y >= 740:
+        if self.y >= 660:
             self.y -= self.step
         if self.y <= 0:
-            self.y += self.step
+            self.y -= self.step
 
     def returnX(self):
         return self.x + 32

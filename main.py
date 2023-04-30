@@ -11,10 +11,22 @@ screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("STARSTRA")
 dt = clock.tick(30) / 1000
-
-purple = (168, 103, 205)
-green = (87, 147, 50)
 white = (200, 200, 200)
+
+font = pygame.font.Font("assets/8_bit_party.ttf", 50)
+left_health = 10
+right_health = 10
+
+
+def render_left_health(msg, color):
+    left_health = font.render(msg, True, color)
+    screen.blit(left_health, [100, 50])
+
+
+def render_right_health(msg, color):
+    right_health = font.render(msg, True, color)
+    screen.blit(right_health, [900, 50])
+
 
 bg = pygame.image.load("assets/background.jpg").convert()
 bg_width = bg.get_width()
@@ -27,7 +39,7 @@ bullet_group_right = pygame.sprite.Group()
 bulletCooldown1 = 0
 bulletCooldown2 = 0
 
-# Define game variables
+# Define background variables
 scroll = 0
 tiles = math.ceil(screen_width / bg_width) + 1
 
@@ -47,11 +59,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
 
-    left_player.wall_collision()
-    left_player.update()
-    right_player.wall_collision()
-    right_player.update()
-    # Fire bullets when space bar is pressed
+    # If the bullet cooldown is zero fire a bullet when LAlt is pressed
     if bulletCooldown1 == 0:
         key_input = pygame.key.get_pressed()
         if key_input[pygame.K_LALT]:
@@ -68,6 +76,7 @@ while True:
     else:
         bulletCooldown1 -= 1
 
+    # If the bullet cooldown is zero fire a bullet when RAlt is pressed
     if bulletCooldown2 == 0:
         key_input = pygame.key.get_pressed()
         if key_input[pygame.K_RALT]:
@@ -80,13 +89,30 @@ while True:
                 "assets/bullet2.png",
                 dt,
             )
-            bullet_group_left.add(right_bullet)
+            bullet_group_right.add(right_bullet)
     else:
         bulletCooldown2 -= 1
+
+    # Change score on bullet collision
+    if right_player.bullet_collision(bullet_group_left, left_health):
+        right_health -= 1
+        for bullet in bullet_group_left:
+            bullet.kill()
+    if left_player.bullet_collision(bullet_group_right, right_health):
+        left_health -= 1
+        for bullet in bullet_group_right:
+            bullet.kill()
 
     bullet_group_left.draw(screen)
     bullet_group_left.update()
     bullet_group_right.draw(screen)
     bullet_group_right.update()
+    left_player.wall_collision()
+    left_player.update()
+    right_player.wall_collision()
+    right_player.update()
+    render_left_health(str(left_health), white)
+    render_right_health(str(right_health), white)
+
     clock.tick(30)
     pygame.display.update()
