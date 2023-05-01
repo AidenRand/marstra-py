@@ -22,7 +22,7 @@ class Player1:
         if key_input[pygame.K_s]:
             self.y += self.step * self.dt
 
-        self.player_rect.move(self.x, self.y)
+        self.player_rect = self.player.get_rect(center=(self.x, self.y))
         self.screen.blit(self.player, (self.x, self.y))
 
     def bullet_collision(self, bullet_group_right, right_health):
@@ -44,4 +44,4 @@ class Player1:
         return self.x + 32
 
     def returnY(self):
-        return self.y + 32
+        return self.y + 22
