@@ -9,23 +9,23 @@ clock = pygame.time.Clock()
 screen_width = 1000
 screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("STARSTRA")
+pygame.display.set_caption("MARSTRA")
 dt = clock.tick(30) / 1000
-white = (200, 200, 200)
+orange = (175, 100, 63)
 
-font = pygame.font.Font("assets/8_bit_party.ttf", 50)
+font = pygame.font.Font("assets/FORCED SQUARE.ttf", 100)
 left_health = 10
 right_health = 10
 
 
 def render_left_health(msg, color):
     left_health = font.render(msg, True, color)
-    screen.blit(left_health, [100, 50])
+    screen.blit(left_health, [70, 50])
 
 
 def render_right_health(msg, color):
     right_health = font.render(msg, True, color)
-    screen.blit(right_health, [900, 50])
+    screen.blit(right_health, [870, 50])
 
 
 bg = pygame.image.load("assets/background.jpg").convert()
@@ -93,7 +93,7 @@ while True:
     else:
         bulletCooldown2 -= 1
 
-    # Change score on bullet collision
+    # Change health on bullet collision
     if right_player.bullet_collision(bullet_group_left, left_health):
         right_health -= 1
         for bullet in bullet_group_left:
@@ -103,6 +103,11 @@ while True:
         for bullet in bullet_group_right:
             bullet.kill()
 
+    if left_health == 0:
+        print("Right player won")
+    else if right_health == 0:
+        print("Left player won")
+    
     bullet_group_left.draw(screen)
     bullet_group_left.update()
     bullet_group_right.draw(screen)
@@ -111,8 +116,8 @@ while True:
     left_player.update()
     right_player.wall_collision()
     right_player.update()
-    render_left_health(str(left_health), white)
-    render_right_health(str(right_health), white)
+    render_left_health(str(left_health), orange)
+    render_right_health(str(right_health), orange)
 
     clock.tick(30)
     pygame.display.update()
