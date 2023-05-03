@@ -10,12 +10,36 @@ screen_width = 1000
 screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("MARSTRA")
+
 dt = clock.tick(30) / 1000
 orange = (175, 100, 63)
+bullet_dead = False
 
-font = pygame.font.Font("assets/FORCED SQUARE.ttf", 100)
-left_health = 10
-right_health = 10
+left_player_x = 10
+left_player_y = 460
+
+right_player_x = 930
+right_player_y = 460
+
+font = pygame.font.Font("assets/8_bit_party.ttf", 60)
+font_2 = pygame.font.Font("assets/8_bit_party.ttf", 20)
+
+left_health = 20
+right_health = 20
+
+gameover = False
+restart_text = "PRESS SPACE TO PLAY AGAIN"
+
+
+def game_over(msg_1, msg_2, color):
+    global gameover, bullet_dead
+    gameover = True
+    bullet_dead = True
+    restart_text = font_2.render(msg_1, True, color)
+    screen.blit(restart_text, [350, 450])
+
+    winner_text = font.render(msg_2, True, color)
+    screen.blit(winner_text, [235, 350])
 
 
 def render_left_health(msg, color):
@@ -28,11 +52,27 @@ def render_right_health(msg, color):
     screen.blit(right_health, [870, 50])
 
 
+def render_players():
+    left_player = player1.Player1(
+        screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
+    )
+    right_player = player2.Player2(
+        screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
+    )
+
+
+render_players()
+
+
 bg = pygame.image.load("assets/background.jpg").convert()
 bg_width = bg.get_width()
 
-left_player = player1.Player1(screen, "assets/player1.png", 10, 460, 30, dt)
-right_player = player2.Player2(screen, "assets/player2.png", 930, 460, 30, dt)
+# left_player = player1.Player1(
+#     screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
+# )
+# right_player = player2.Player2(
+#     screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
+# )
 
 bullet_group_left = pygame.sprite.Group()
 bullet_group_right = pygame.sprite.Group()
@@ -58,10 +98,20 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+    key_input = pygame.key.get_pressed()
+
+    if key_input[pygame.K_SPACE] and gameover:
+        left_health = 20
+        right_health = 20
+        left_player_x = 10
+        left_player_y = 460
+        right_player_x = 930
+        right_player_y = 460
+        gameover = False
+        bullet_dead = False
 
     # If the bullet cooldown is zero fire a bullet when LAlt is pressed
     if bulletCooldown1 == 0:
-        key_input = pygame.key.get_pressed()
         if key_input[pygame.K_LALT]:
             bulletCooldown1 += 20
             left_bullet = bullet1.Bullet1(
@@ -78,7 +128,6 @@ while True:
 
     # If the bullet cooldown is zero fire a bullet when RAlt is pressed
     if bulletCooldown2 == 0:
-        key_input = pygame.key.get_pressed()
         if key_input[pygame.K_RALT]:
             bulletCooldown2 += 20
             right_bullet = bullet1.Bullet1(
@@ -103,11 +152,19 @@ while True:
         for bullet in bullet_group_right:
             bullet.kill()
 
-    if left_health == 0:
-        print("Right player won")
-    else if right_health == 0:
-        print("Left player won")
-    
+    if left_health == 0 and right_health == 0:
+        game_over(restart_text, "TIE", orange)
+    elif left_health == 0:
+        game_over(restart_text, "RIGHT PLAYER WINS", orange)
+    elif right_health == 0:
+        game_over(restart_text, "LEFT PLAYER WINS", orange)
+
+    if bullet_dead == True:
+        for bullet in bullet_group_left:
+            bullet.kill()
+        for bullet in bullet_group_right:
+            bullet.kill()
+
     bullet_group_left.draw(screen)
     bullet_group_left.update()
     bullet_group_right.draw(screen)
