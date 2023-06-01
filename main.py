@@ -52,27 +52,15 @@ def render_right_health(msg, color):
     screen.blit(right_health, [870, 50])
 
 
-def render_players():
-    left_player = player1.Player1(
-        screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
-    )
-    right_player = player2.Player2(
-        screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
-    )
-
-
-render_players()
-
-
 bg = pygame.image.load("assets/background.jpg").convert()
 bg_width = bg.get_width()
 
-# left_player = player1.Player1(
-#     screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
-# )
-# right_player = player2.Player2(
-#     screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
-# )
+left_player = player1.Player1(
+    screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
+)
+right_player = player2.Player2(
+    screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
+)
 
 bullet_group_left = pygame.sprite.Group()
 bullet_group_right = pygame.sprite.Group()
@@ -107,6 +95,12 @@ while True:
         left_player_y = 460
         right_player_x = 930
         right_player_y = 460
+        left_player = player1.Player1(
+            screen, "assets/player1.png", left_player_x, left_player_y, 30, dt
+        )
+        right_player = player2.Player2(
+            screen, "assets/player2.png", right_player_x, right_player_y, 30, dt
+        )
         gameover = False
         bullet_dead = False
 
