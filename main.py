@@ -4,31 +4,48 @@ import player1
 import player2
 import bullet1
 
+# Create pygame window
 pygame.init()
 clock = pygame.time.Clock()
 screen_width = 1000
 screen_height = 700
+fps = 60
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("MARSTRA")
+gameover = False
 
 dt = clock.tick(30) / 1000
 orange = (175, 100, 63)
 bullet_dead = False
 
-left_player_x = 10
-left_player_y = 460
-
-right_player_x = 930
-right_player_y = 460
-
+# Load fonts
 font = pygame.font.Font("assets/8_bit_party.ttf", 60)
 font_2 = pygame.font.Font("assets/8_bit_party.ttf", 20)
 
+# Left player variables
+left_player_x = 10
+left_player_y = 460
+
+left_health_x = 70
+left_health_y = 50
 left_health = 20
+
+# Right player variables
+right_player_x = 930
+right_player_y = 460
+
+right_health_x = 870
+right_health_y = 50
 right_health = 20
 
-gameover = False
+# Restart text variables
+restart_text_x = 350
+restart_text_y = 450
 restart_text = "PRESS SPACE TO PLAY AGAIN"
+
+# Winner text variables
+winner_text_x = 235
+winner_text_y = 350
 
 
 def game_over(msg_1, msg_2, color):
@@ -36,20 +53,20 @@ def game_over(msg_1, msg_2, color):
     gameover = True
     bullet_dead = True
     restart_text = font_2.render(msg_1, True, color)
-    screen.blit(restart_text, [350, 450])
+    screen.blit(restart_text, [restart_text_x, restart_text_y])
 
     winner_text = font.render(msg_2, True, color)
-    screen.blit(winner_text, [235, 350])
+    screen.blit(winner_text, [winner_text_x, winner_text_y])
 
 
 def render_left_health(msg, color):
     left_health = font.render(msg, True, color)
-    screen.blit(left_health, [70, 50])
+    screen.blit(left_health, [left_health_x, left_health_y])
 
 
 def render_right_health(msg, color):
     right_health = font.render(msg, True, color)
-    screen.blit(right_health, [870, 50])
+    screen.blit(right_health, [right_health_x, right_health_y])
 
 
 bg = pygame.image.load("assets/background.jpg").convert()
@@ -69,6 +86,7 @@ bulletCooldown2 = 0
 
 # Define background variables
 scroll = 0
+scroll_speed = 5
 tiles = math.ceil(screen_width / bg_width) + 1
 
 while True:
@@ -77,7 +95,7 @@ while True:
         screen.blit(bg, (i * bg_width + scroll, 0))
 
     # Scroll background
-    scroll -= 5
+    scroll -= scroll_speed
 
     # Reset scroll
     if abs(scroll) > bg_width:
@@ -170,5 +188,5 @@ while True:
     render_left_health(str(left_health), orange)
     render_right_health(str(right_health), orange)
 
-    clock.tick(30)
+    clock.tick(fps)
     pygame.display.update()
